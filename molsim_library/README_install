@@ -1,0 +1,154 @@
+MolSim Course – Complete Installation Guide
+===========================================
+
+This guide installs:
+
+- molsim (compiled C++ extension via pybind11)
+- numba
+- nglview
+- MDAnalysis
+- Jupyter support
+
+Recommended: Miniconda or Anaconda
+
+
+1) Create a Clean Conda Environment
+-----------------------------------
+
+conda create -n molsim_env python=3.10
+conda activate molsim_env
+
+Python 3.10 is recommended because setup.py specifies python >= 3.10.
+
+
+2) Install Core Scientific Stack (via conda)
+--------------------------------------------
+
+IMPORTANT: Use conda for packages involving compiled code.
+
+conda install numpy scipy matplotlib numba -c conda-forge
+
+This avoids compilation issues with llvmlite.
+
+
+3) Install Build Tools for C++ Extension
+----------------------------------------
+
+Make sure you have a compiler installed.
+
+Mac:
+xcode-select --install
+
+Linux:
+sudo apt install build-essential
+
+
+4) Install Build Utilities
+--------------------------
+
+pip install --upgrade pip setuptools wheel
+conda install pybind11 -c conda-forge
+
+
+5) Install molsim (from source)
+-------------------------------
+
+Navigate to the folder containing setup.py:
+
+cd path/to/Molsim-source-exercises_2026
+
+Then install using:
+
+pip install . --no-build-isolation
+
+IMPORTANT:
+- Do NOT use plain "pip install ."
+- Use "--no-build-isolation" so it detects installed pybind11.
+
+If successful, test in Python:
+
+import molsim
+
+
+6) Install Visualization Packages
+----------------------------------
+
+Use conda-forge:
+
+conda install -c conda-forge nglview mdanalysis
+
+Install Jupyter support:
+
+pip install jupyterlab ipykernel ipywidgets
+
+
+7) Register Environment as Jupyter Kernel
+------------------------------------------
+
+python -m ipykernel install --user --name molsim_env --display-name "Python (molsim_env)"
+
+
+8) Launch Jupyter
+-----------------
+
+conda activate molsim_env
+jupyter lab
+
+Inside Jupyter:
+
+Kernel → Change Kernel → Python (molsim_env)
+
+Verify correct environment:
+
+import sys
+print(sys.executable)
+
+It should point to:
+.../miniconda3/envs/molsim_env/bin/python
+
+
+9) Quick Test
+-------------
+
+from molsim import MonteCarlo
+import nglview as nv
+import MDAnalysis as mda
+
+If no errors appear, installation is complete.
+
+
+Common Problems and Fixes
+-------------------------
+
+Problem: ModuleNotFoundError: pybind11
+Solution: Install pybind11 and use --no-build-isolation.
+
+Problem: llvmlite build error
+Solution: Install numba with conda, not pip.
+
+Problem: Kernel not found
+Solution: Re-run ipykernel install.
+
+Problem: Viewer not showing
+Solution: Restart Jupyter.
+
+
+Final Environment Summary
+-------------------------
+
+The environment includes:
+
+- Python 3.10
+- molsim (C++ extension compiled)
+- NumPy / SciPy / Matplotlib
+- Numba (LLVM JIT acceleration)
+- MDAnalysis
+- NGLView
+- JupyterLab
+
+This setup is stable for:
+
+- Monte Carlo simulations
+- Molecular Dynamics
+- Visualization
+- Course notebooks
